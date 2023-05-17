@@ -1,6 +1,12 @@
 <script>
+import { onMount } from 'svelte';
+import { browser } from '$app/environment';
+import ToDo from '../lib/components/ToDo.svelte';
+
     let todoText = "";
     let todos = [];
+
+    let test;
 
     function saveTodoList(todoList) {
         localStorage.setItem('todoList', JSON.stringify(todoList));
@@ -35,12 +41,7 @@
 <button on:click={addTodo}>ADD</button>
 <!--todo-->
 {#each todos as todo, index}
-    <div class="todo-entry" class:done={todo.done}>
-        <input type="checkbox" bind:value={todo.done} />
-        <div class="todo-text">{todo.text}</div>
-        <div class="timestamp">{todo.timestamp}</div> <!-- Display timestamp -->
-        <button class="delete" on:click={() => { remove(index); }}>X</button>
-    </div>
+    <ToDo todoData={todo} bind:testProp={test} {index} on:removeEvent={remove} />
 {/each}
 <!-- text -->
 <!-- checkboxen -->
@@ -49,34 +50,4 @@
         font-family: Arial, Helvetica, sans-serif;
     }
 
-    .delete {
-        background-color: white;
-        border: none;
-    }
-
-    .delete:hover {
-        background-color: green;
-        border-radius: 5px;
-    }
-
-    .done {
-        color: grey;
-    }
-
-    .todo-entry {
-        display: flex;
-        align-items: center;
-    }
-    
-    .timestamp {
-        font-size: 12px;
-        color: gray;
-        margin-top: 4px;
-        margin-left: 5px;
-    }
-    
-    .done .todo-text {
-        margin-left: 100px; 
-        color: green;
-    }
 </style>
